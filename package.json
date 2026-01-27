@@ -1,0 +1,50 @@
+{
+  "name": "kpai-web-be",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "tsoa spec-and-routes && tsc",
+    "start": "node build/src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Silicon-Valley-Privacy-Preserving-AI/kpai-web-be.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Silicon-Valley-Privacy-Preserving-AI/kpai-web-be/issues"
+  },
+  "homepage": "https://github.com/Silicon-Valley-Privacy-Preserving-AI/kpai-web-be#readme",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "reflect-metadata": "^0.2.2",
+    "sqlite3": "^5.0.2",
+    "swagger-ui-express": "^5.0.1",
+    "tsoa": "^7.0.0-alpha.0",
+    "typeorm": "^0.3.6"
+  },
+  "overrides": {
+    "tar": "^7.5.3",
+    "sqlite3": {
+      "node-gyp": {
+        "tar": "^7.5.3"
+      }
+    }
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.6",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.0.10",
+    "@types/swagger-ui-express": "^4.1.8",
+    "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
