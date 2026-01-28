@@ -18,3 +18,10 @@ if not SECRET_KEY:
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS")
 if not ALLOWED_ORIGINS:
     raise RuntimeError("ALLOWED_ORIGINS is missing in the .env file")
+
+
+JWT_SECRET = os.getenv("JWT_SECRET")
+ALGORITHM = os.getenv("ALGORITHM")
+TOKEN_LIFETIME_MINUTE = int(os.getenv("TOKEN_LIFETIME_MINUTE"))
+if not all([JWT_SECRET, ALGORITHM, TOKEN_LIFETIME_MINUTE]):
+    raise RuntimeError("JWT environment variables are missing")

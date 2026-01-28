@@ -8,7 +8,7 @@ router = APIRouter(prefix="/system", tags=["System"])
 async def get_system_service(db: AsyncSession = Depends(get_db)):
     return SystemService(db)
 
-@router.post("/healthcheck",
+@router.get("/healthcheck",
              summary="Health Check",
              description="Return data about whether server is live",
              responses={
@@ -25,6 +25,6 @@ async def get_system_service(db: AsyncSession = Depends(get_db)):
 async def create_user(system_service: SystemService = Depends(get_system_service)):
     return await system_service.healthcheck()
 
-@router.get("/testdb", summary="Check db status")
+@router.get("/users", summary="Get all user entry")
 async def get_users(system_service: SystemService = Depends(get_system_service)):
-    return await system_service.test_db()
+    return await system_service.get_users()

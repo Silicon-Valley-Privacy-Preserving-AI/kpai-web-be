@@ -8,7 +8,8 @@ app = FastAPI(
     title="K-PAI backend web server",
     description="K-PAI backend api documentation",
     version="1.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
+    swagger_ui_parameters={"persistAuthorization": True}
 )
 
 

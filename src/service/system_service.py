@@ -9,6 +9,6 @@ class SystemService:
     async def healthcheck(self):
         return {"message": "yes"}
 
-    async def test_db(self):
+    async def get_users(self):
         result = await self.db.execute(select(User))
-        return {"status": "connected", "result": result}
+        return result.scalars().all()

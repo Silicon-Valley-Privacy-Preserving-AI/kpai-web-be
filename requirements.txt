@@ -11,4 +11,8 @@ aiosqlite
 pydantic
 
 # Password Hashing
-passlib[bcrypt]
+bcrypt<4.0
+passlib[bcrypt]==1.7.4
+
+# JWT Authorization
+PyJWT
