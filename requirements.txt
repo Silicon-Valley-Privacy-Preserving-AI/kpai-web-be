@@ -1,0 +1,11 @@
+# WAS
+fastapi
+uvicorn
+
+# ENV
+python-dotenv
+
+# DB, DTO Schema
+sqlalchemy>=2.0.0
+aiosqlite
+pydantic
