@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from src.model.user import User
 from src.schema.user import UserCreate
+from src.util.security import get_password_hash
 
 class UserService:
     def __init__(self, db: AsyncSession):
@@ -11,7 +12,7 @@ class UserService:
         new_user = User(
             email=user_data.email,
             username=user_data.username,
-            password=user_data.password
+            password=get_password_hash(user_data.password)
         )
         self.db.add(new_user)
         await self.db.commit()

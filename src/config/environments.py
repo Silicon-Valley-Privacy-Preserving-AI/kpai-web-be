@@ -10,6 +10,11 @@ if not PORT:
     raise RuntimeError("PORT is missing in the .env file")
 
 
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY is missing in the .env file")
+
+
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS")
 if not ALLOWED_ORIGINS:
-    raise RuntimeError("Allowed origins variable is missing in the .env file")
+    raise RuntimeError("ALLOWED_ORIGINS is missing in the .env file")

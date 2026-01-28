@@ -9,3 +9,6 @@ python-dotenv
 sqlalchemy>=2.0.0
 aiosqlite
 pydantic
+
+# Password Hashing
+passlib[bcrypt]
