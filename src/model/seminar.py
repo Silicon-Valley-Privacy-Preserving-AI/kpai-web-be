@@ -4,17 +4,17 @@ from sqlalchemy import func
 from datetime import datetime
 
 
-class User(Base):
-    __tablename__ = "users"
+class Seminar(Base):
+    __tablename__ = "seminars"
     id: Mapped[int] = mapped_column(primary_key=True)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
-    email: Mapped[str] = mapped_column(unique=True, index=True)
-    username: Mapped[str] = mapped_column()
-    password: Mapped[str] = mapped_column()
+    title: Mapped[str] = mapped_column()
+    description: Mapped[str] = mapped_column()
+    maximum_rsvp_count: Mapped[int] = mapped_column()
 
-    seminar_rsvps = relationship(
+    rsvps = relationship(
         "SeminarRSVP",
-        backref="user",
+        backref="seminar",
         cascade="all, delete-orphan"
     )

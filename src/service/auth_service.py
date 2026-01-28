@@ -43,4 +43,10 @@ class AuthService:
             )
 
         user = await self.user_service.get_user_by_email(email)
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User does not exist"
+            )
+
         return user

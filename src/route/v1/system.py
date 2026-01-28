@@ -25,6 +25,14 @@ async def get_system_service(db: AsyncSession = Depends(get_db)):
 async def create_user(system_service: SystemService = Depends(get_system_service)):
     return await system_service.healthcheck()
 
-@router.get("/users", summary="Get all user entry")
+@router.get("/users", summary="Get all users entry")
 async def get_users(system_service: SystemService = Depends(get_system_service)):
     return await system_service.get_users()
+
+@router.get("/seminars", summary="Get all seminars entry")
+async def get_users(system_service: SystemService = Depends(get_system_service)):
+    return await system_service.get_seminars()
+
+@router.get("/seminar_rsvps", summary="Get all seminar_rsvps entry")
+async def get_users(system_service: SystemService = Depends(get_system_service)):
+    return await system_service.get_seminarRSVPs()
