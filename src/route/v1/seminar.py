@@ -121,3 +121,19 @@ async def cancel_rsvp_seminar(
         raise HTTPException(status_code=404, detail="Seminar not found")
 
     return await seminar_service.cancel_rsvp(seminar, current_user)
+
+
+@router.post(
+    "/{seminar_id}/check-in",
+    summary="Check in for seminar"
+)
+async def check_in_seminar(
+    seminar_id: int,
+    current_user: User = Depends(get_current_user),
+    seminar_service: SeminarService = Depends(get_seminar_service)
+):
+    seminar = await seminar_service.get_seminar_by_id(seminar_id)
+    if seminar is None:
+        raise HTTPException(status_code=404, detail="Seminar not found")
+
+    return await seminar_service.check_in(seminar, current_user)

@@ -6,6 +6,7 @@ from sqlalchemy.orm import selectinload
 from src.model import User, SeminarRSVP
 from src.model.seminar import Seminar
 from src.schema.seminar import SeminarCreateRequest, SeminarModifyRequest
+from datetime import datetime, UTC
 
 
 class SeminarService:
@@ -46,7 +47,16 @@ class SeminarService:
         if seminar is None:
             return None
 
-        users = [rsvp.user for rsvp in seminar.rsvps]
+        users = [
+            {
+                "id": rsvp.user.id,
+                "email": rsvp.user.email,
+                "username": rsvp.user.username,
+                "checked_in": rsvp.checked_in,
+                "checked_in_at": rsvp.checked_in_at,
+            }
+            for rsvp in seminar.rsvps
+        ]
 
         return {
             "id": seminar.id,
@@ -61,11 +71,7 @@ class SeminarService:
         result = await self.db.execute(select(Seminar))
         return result.scalars().all()
 
-    async def modify_seminar(
-        self,
-        seminar: Seminar,
-        seminar_data: SeminarModifyRequest
-    ):
+    async def modify_seminar(self, seminar: Seminar, seminar_data: SeminarModifyRequest):
         if seminar_data.title is not None:
             seminar.title = seminar_data.title
 
@@ -138,3 +144,31 @@ class SeminarService:
 
         return {"message": "RSVP cancelled"}
 
+    async def check_in(self, seminar: Seminar, user: User):
+        result = await self.db.execute(
+            select(SeminarRSVP).where(
+                SeminarRSVP.seminar_id == seminar.id,
+                SeminarRSVP.user_id == user.id
+            )
+        )
+        rsvp = result.scalar_one_or_none()
+
+        if rsvp is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="RSVP not found"
+            )
+
+        if rsvp.checked_in:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Already checked in"
+            )
+
+        rsvp.checked_in = True
+        rsvp.checked_in_at = datetime.now(UTC)
+
+        await self.db.commit()
+        await self.db.refresh(rsvp)
+
+        return {"message": "Check-in successful"}

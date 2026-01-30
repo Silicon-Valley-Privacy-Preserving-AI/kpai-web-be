@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 
@@ -25,13 +26,22 @@ class SeminarResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
+class SeminarUserResponse(BaseModel):
+    id: int
+    email: str
+    username: str
+    checked_in: bool
+    checked_in_at: datetime | None
+
+
 class SeminarDetailResponse(BaseModel):
     id: int
     title: str
     description: str
     maximum_rsvp_count: int
     current_rsvp_count: int
-    users: list[UserResponse]
+    users: list[SeminarUserResponse]
 
     class Config:
         from_attributes = True
