@@ -25,3 +25,8 @@ ALGORITHM = os.getenv("ALGORITHM")
 TOKEN_LIFETIME_MINUTE = int(os.getenv("TOKEN_LIFETIME_MINUTE"))
 if not all([JWT_SECRET, ALGORITHM, TOKEN_LIFETIME_MINUTE]):
     raise RuntimeError("JWT environment variables are missing")
+
+
+STAFF_CODE = os.getenv("STAFF_CODE")
+if not STAFF_CODE:
+    raise RuntimeError("STAFF_CODE is missing in the .env file")

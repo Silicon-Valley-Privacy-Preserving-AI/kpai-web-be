@@ -4,6 +4,7 @@ from src.config.database import get_db
 from fastapi import HTTPException, status
 
 from src.model import User
+from src.model.user import UserRole
 from src.route.v1.user import get_current_user
 from src.service.seminar_service import SeminarService
 from src.schema.seminar import (
@@ -20,6 +21,17 @@ async def get_seminar_service(
     db: AsyncSession = Depends(get_db)
 ):
     return SeminarService(db)
+
+
+async def get_current_staff(
+    current_user: User = Depends(get_current_user),
+):
+    if current_user.role != UserRole.STAFF:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Staff only"
+        )
+    return current_user
 
 
 @router.get(
@@ -55,12 +67,13 @@ async def get_seminar(
 
 @router.post(
     "",
-    summary="Create seminar",
+    summary="(Staff only) Create seminar",
     response_model=SeminarResponse,
     status_code=status.HTTP_201_CREATED
 )
 async def create_seminar(
     seminar_data: SeminarCreateRequest,
+    staff_user: User = Depends(get_current_staff),
     seminar_service: SeminarService = Depends(get_seminar_service)
 ):
     return await seminar_service.create_seminar(seminar_data)
@@ -68,11 +81,12 @@ async def create_seminar(
 
 @router.put(
     "/{seminar_id}",
-    summary="Modify seminar"
+    summary="(Staff only) Modify seminar"
 )
 async def modify_seminar(
     seminar_id: int,
     seminar_data: SeminarModifyRequest,
+    staff_user: User = Depends(get_current_staff),
     seminar_service: SeminarService = Depends(get_seminar_service)
 ):
     seminar = await seminar_service.get_seminar_by_id(seminar_id)
@@ -81,10 +95,11 @@ async def modify_seminar(
 
 @router.delete(
     "/{seminar_id}",
-    summary="Delete seminar"
+    summary="(Staff only) Delete seminar"
 )
 async def delete_seminar(
     seminar_id: int,
+    staff_user: User = Depends(get_current_staff),
     seminar_service: SeminarService = Depends(get_seminar_service)
 ):
     seminar = await seminar_service.get_seminar_by_id(seminar_id)
